@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!--
+ Photo Album ant file
+
+ (C) Matthew West 2002-2005
+
+ $Id: build.xml,v 1.6 2005/02/06 02:14:37 mfw Exp $
+-->
+
+<project name="Album" default="bin" basedir=".">
+ <property name="version" value="0.1" />
+<!-- Build values -->
+ <property name="src.dir" value="java"/>
+ <property name="lib.dir" value="bin"/>
+ <property name="build.dir" value="build"/>
+ <property name="build.classes" value="${build.dir}/classes"/>
+ <property name="build.javadocs" value="${build.dir}/javadocs"/>
+ <property name="bin.dir" value="bin"/>
+ <property name="sample.dir" value="sample" />
+ <property name="sampleoutput.dir" value="${build.dir}/sample" />
+ <property name="doc.dir" value="doc" />
+ <property name="backup" location="/home/mfw/backup" />
+
+ <fileset id="dist.extras" dir="./">
+  <include name="build.xml" />
+  <include name="manifest" />
+  <include name="README" />
+  <include name="LICENSE" />
+  <include name="LICENSE.Apache" />
+ </fileset>
+
+ <path id="classpath">
+  <pathelement location="${lib}" />
+ </path> 
+
+ <target name="prepare">
+  <tstamp>
+   <format property="time.stamp" pattern="dd-MMMM-yyyy hh:mm" locale="en" />
+   <format property="backup.time" pattern="yyyyMMdd-HHmm" />
+  </tstamp>  
+  <filterset id="dist.filter">
+   <filter token="VERSION" value="${version}" />
+   <filter token="TIME" value="${time.stamp}" />
+  </filterset>
+
+  <uptodate property="javadoc.done" targetfile="${build.javadocs}/packages.html">
+   <srcfiles dir="${src.dir}" includes="**/*.java" />
+  </uptodate>
+  <uptodate property="sample.done" targetfile="${sampleoutput.dir}/index.html">
+   <srcfiles dir="${sample.dir}" includes="sample.*" />
+   <srcfiles dir="${src.dir}" includes="**/*.java" />
+  </uptodate>
+ </target>
+
+ <target name="build"
+         depends="prepare"
+         description="--> Builds the project">
+  <mkdir dir="${build.dir}"/>
+  <mkdir dir="${build.classes}"/>
+  <javac srcdir="${src.dir}"
+         destdir="${build.classes}"
+         debug="true">
+   <classpath refid="classpath" />
+  </javac>
+ </target>
+
+ <target name="jar"
+         depends="build"
+	 description="--> Creates the jar file">
+  <jar jarfile="${build.dir}/Album.jar"
+       basedir="${build.classes}" 
+       manifest="manifest" />
+ </target>
+
+ <target name="bin"
+         depends="jar"
+	 description="--> Builds full programs">
+  <mkdir dir="${bin.dir}" />
+  <copy todir="${bin.dir}">
+   <fileset dir="${lib.dir}"/>
+  </copy>
+  <copy todir="${bin.dir}" file="${build.dir}/Album.jar"/>
+ </target>
+
+ <target name="sample"
+         depends="bin"
+         unless="sample.done"
+         description="--> Builds sample album">
+  <java jar="${bin.dir}/Album.jar"
+        fork="true">
+   <arg line="-f ${sample.dir}/sample.xml -x ${sample.dir}/sample.xsl -t ${sampleoutput.dir}" />
+  </java>      
+ </target>
+
+ <target name="javadoc"
+         depends="prepare"
+         unless="javadoc.done"
+         description="--> Builds javadoc">
+  <mkdir dir="${build.javadocs}" />
+  <javadoc packagenames="uk.co.matthewwest.Album"
+           sourcepath="${src.dir}"
+           defaultexcludes="yes"
+           destdir="${build.javadocs}"
+           author="true"
+           version="true"
+           access="private"
+	   nodeprecatedlist="true"
+           windowtitle="Photo Album Javadoc">
+   <doctitle><![CDATA[<h1>Photo Album</h1>]]></doctitle>
+   <header>
+    <![CDATA[
+     Project homepage:
+     <a href="http://www.matthewwest.co.uk/computing/photo-album.html" title="Website">
+      www.matthewwest.co.uk
+     </a> 
+    ]]>
+   </header> 
+   <bottom><![CDATA[<i>Copyright &#169; 2002-2005 Matthew West. All Rights Reserved.</i>]]></bottom>
+  </javadoc>
+ </target>
+
+ <target name="dist"
+         depends="bin, sample, javadoc"
+         description="--> Builds a distribution zip file">
+  <property name="dist.dir" value="${build.dir}/album-${version}" />
+  <mkdir  dir="${dist.dir}" />
+  <copy todir="${dist.dir}/${src.dir}">
+   <fileset dir="${src.dir}" excludes="'**/*.java,v'"/>
+   <filterset refid="dist.filter" />
+  </copy> 
+  <copy todir="${dist.dir}/${bin.dir}">
+   <fileset dir="${bin.dir}" />
+  </copy> 
+  <copy todir="${dist.dir}/${lib.dir}">
+   <fileset dir="${lib.dir}" />
+  </copy> 
+  <copy todir="${dist.dir}/${sample.dir}">
+   <fileset dir="${sample.dir}" includes="sample.*" />
+   <filterset refid="dist.filter" />
+  </copy>
+  <copy todir="${dist.dir}/${sample.dir}">
+   <fileset dir="${sample.dir}" excludes="sample.*"/>
+  </copy>
+  <copy todir="${dist.dir}/${doc.dir}">
+   <fileset dir="${doc.dir}" />
+  </copy>
+  <copy todir="${dist.dir}/${doc.dir}/javadoc">
+   <fileset dir="${build.javadocs}" />
+  </copy>
+  <copy todir="${dist.dir}/">
+   <fileset refid="dist.extras" />
+  </copy> 
+  <zip zipfile="${dist.dir}.zip" basedir="${dist.dir}" update="yes" />
+  <sleep seconds="2" />
+  <tar tarfile="${dist.dir}.tar" basedir="${dist.dir}" />
+  <gzip src="${dist.dir}.tar" zipfile="${dist.dir}.tar.gz" />
+ </target> 
+
+ <target name="backup"
+         depends="prepare"
+	 description="--> Backs up this directory">
+  <property name="backup.file" location="${backup}/${ant.project.name}-${backup.time}" />
+  <sleep seconds="2" />
+  <tar destfile="${backup.file}.tar.bz2" compression="bzip2" basedir="." 
+       excludes="build/**/* bin/**/* *.tar.gz *.zip album*/**/* sample/output/**/*" />
+ </target>
+
+ <target name="clean"
+         description="--> Removes files created by the build process">
+  <delete dir="${build.dir}" />
+  <delete> 
+   <fileset dir="." includes="**/*~" defaultexcludes="no"/>
+  </delete>
+ </target> 
+</project>

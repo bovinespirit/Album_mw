@@ -1,0 +1,86 @@
+$Id: README,v 1.1.1.1 2002/09/04 21:37:50 mfw Exp $
+
+                         Photo Album Creater
+                        ---------------------    
+
+Version : @VERSION@
+Distribution created : @TIME@
+
+Copyright (C) 2002 Matthew West album@matthewwest.co.uk www.matthewwest.co.uk/
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+    EXCEPTION: Xalan.jar and XercesImpl.jar are copyright The Apache
+    Project, and are released under the terms of the Apache Licence.
+    See www.apache.org/.
+
+Welcome!
+
+ Hello, thank you for downloading the Photo Album Creater.  To run it
+you will also need a working version of Java, version 1.3 or better.
+In fact you will probably need Sun's version, as I have used their
+JPEG library which usually isn't available on other Javas.
+
+Viewing The Sample
+
+ Point your web browser at sample/output/index.html to see an example
+of what this program produces.  Go to www.matthewwest.co.uk/photos/
+for a more complicated example.  The files used to produce the sample
+are sample.xml, sample.xsl and the contents of the source_images/
+directory.  These are all in the samples directory.  You can recreate
+the samples with the command:
+
+        java -jar bin/Album.jar -f sample/sample.xml -x sample/sample.xsl -o sample/output
+
+Running The Program
+
+ The previous comand is as complicated as it gets.
+
+        -f defines the input file of which more later
+        -x defines the XSL file which processes the XML from the program to create HTML
+        -o defines the directory in which to put the output
+
+The Input File
+
+ This file defines how the photos are organised, and gives them
+captions etc.  See the sample for an example of what one looks like.
+Sections can contain pages, images or more sections.  Pages can contain
+images.  Sections can start with an index page if index="yes".
+
+The XSL File
+
+ The Album program creates an XML file for each page it produces.  If
+you do not specify an XSL file then this is what it saves.  The XSL
+file converts the XML file into HTML.  The content of the page is
+therefore seperate from the presentation.  You can change the look of
+the page without needing to know any Java.  XSLT is a complicated
+language in it's own right, more info can be found at www.w3.org/.
+
+Compiling The Program
+
+ To recompile the program you will need Ant, which is available from
+java.apache.org/.  Change to this directory and type 'ant bin'.  That
+will recompile the program and put a new .jar file into the bin/
+directory.
+
+Acknowledgement
+
+ This program uses Xalan, Xerces and Ant , all developed by the Apache
+Software Foundation (http://www.apache.org).  I have included their
+.jar files in lib/ and bin/.  I am grateful to the authors of these
+programs for donating their time and expertise to both the programs
+and their documentation.
+
+

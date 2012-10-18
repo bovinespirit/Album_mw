@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!-- File to test Album program -->
+<!-- $Id: sample.xml,v 1.1 2002/07/11 18:34:36 mfw Exp $ -->
+<!-- (C) Matthew West 2002 -->
+
+<album name="Photo Album Test" index="yes">
+ 
+ <page name="first page of photos">
+  <description>
+   A page of photos
+  </description>
+  <image src="sample/source_images/image1.jpg" name="page 1 image 1" />
+  <image src="sample/source_images/image2.jpg" name="page 1 image 2" />
+   <description>
+    This one supplies an image to the index
+   </description> 
+  <image src="sample/source_images/image3.jpg" name="page 1 image 3"/>
+  <image src="sample/source_images/image4.jpg" name="page 1 image 4"/>
+ </page>
+
+ <section name="section 1" index="yes">
+  <description>
+   This is section 1.  It should have an index page which displays images 1, 2 and 3
+  </description> 
+  <page name="page 1">
+   <title>
+    This is page 1 of section 1
+   </title>
+   <description>
+    s1p1 has both a title and a description
+   </description>
+   <image src="sample/source_images/image1.jpg" name="s1p1i1" index-image="yes">
+    <title>Section 1 page 1 image 1</title>
+    <description>This image has a name, a title and a description</description>
+   </image> 
+   <image src="sample/source_images/image2.jpg" name="s1p1i2" />
+   <image src="sample/source_images/image3.jpg" name="s1p1i3" />
+   <image src="sample/source_images/image4.jpg" name="s1p1i4" />
+   <image src="sample/source_images/image5.jpg" name="s1p1i5" />
+   <image src="sample/source_images/image6.jpg" name="s1p1i6" />
+  </page>
+  <page name="Page 2" index-image="yes">
+   <title>
+    This is page 2 of section 1.
+   </title>
+   <description>
+    It supplies it's index image as the index image for the whole section.
+   </description> 
+   <image src="sample/source_images/image1.jpg" name="s1p2i1" />
+   <image src="sample/source_images/image2.jpg" name="s1p2i2" index-image="yes" />
+   <image src="sample/source_images/image3.jpg" name="s1p2i3" />
+  </page>
+  <page name="Page 3">
+   <title>
+    This is page 3 of section 1
+   </title>
+   <description>
+    This is the final page of section 1
+   </description> 
+   <image src="sample/source_images/image1.jpg" name="s1p3i1" />
+   <image src="sample/source_images/image2.jpg" name="s1p3i2" />
+   <image src="sample/source_images/image3.jpg" name="s1p3i3" index-image="yes" />
+  </page>
+ </section>
+
+ <section name="section 2" index="yes">
+  <description>
+   This section has sub sections and pages.  There are no images as this is only a demo.
+  </description>
+  <section name="section 2.1" index-image="yes">
+   <title>
+    Section 2, sub-section 1
+   </title>
+   <page name="s2.1p1" index-image="yes">
+    <description>
+     This page has an image for the main index
+    </description> 
+    <image src="sample/source_images/image3.jpg" name="s2.1p1i1" index-image="yes" />
+   </page>
+   <page name="s2.1p2" />
+   <page name="s2.1p3" />
+   <page name="s2.1p4" />
+  </section>
+  <section name="section 2.2">
+   <page name="s2.2p1">
+    <description>
+     This section has no index, so this is page 1
+    </description>
+   </page>
+   <page name="s2.2p2" />
+   <page name="s2.2p3" />
+  </section>
+  <section name="section 2.3" index="yes">
+   <section name="s2.3.1">
+    <page name="s2.3.1p1">
+     <description>
+      This is page 1 of section 2.3.1.  The depths of sections are unlimited.
+     </description>
+    </page>
+    <page name="s2.3.1p2" />
+    <page name="s2.3.1p3" />
+   </section>
+   <section name="section 2.3.2" index="yes">
+    <description>
+     This section has only images, no pages
+    </description> 
+    <image src="sample/source_images/image1.jpg" name="s2.3.2i1" />
+    <image src="sample/source_images/image2.jpg" name="s2.3.2i2" />
+    <image src="sample/source_images/image3.jpg" name="s2.3.2i3" index-image="yes" />
+   </section>
+  </section>
+ </section>
+</album>  
+

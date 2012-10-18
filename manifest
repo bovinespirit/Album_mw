@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: uk.co.matthewwest.Album.Album
+Class-Path: xalan.jar xml-apis.jar xercesImpl.jar
